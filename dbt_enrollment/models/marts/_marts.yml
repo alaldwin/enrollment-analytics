@@ -20,7 +20,7 @@ models:
           - not_null
 
   - name: dim_program
-    description: "Program and college dimension."
+    description: "Program dimension."
     columns:
       - name: program_key
         data_tests:
@@ -28,12 +28,24 @@ models:
           - not_null
 
       - name: program_code
-        data_tests:
-          - unique
+        data_tests: 
           - not_null
 
       - name: program
         data_tests:
+          - not_null
+
+  - name: dim_college
+    description: "College dimension."
+    columns:
+      - name: college_key
+        data_tests:
+          - unique
+          - not_null
+
+      - name: college
+        data_tests:
+          - unique
           - not_null
 
   - name: dim_campus
@@ -137,7 +149,7 @@ models:
           - not_null
           - accepted_values:
               arguments:
-                values: ["Enrolled", "Dropped", "Loa"]
+                values: ["Enrolled", "Pending", "Dropped", "Withdrawn", "Loa"]
 
       - name: enrollment_count
         data_tests:

@@ -22,7 +22,26 @@ fact AS (
         -- Dimension foreign keys
         MD5(student_id) AS student_key,
 
-        MD5(program_code) AS program_key,
+        MD5(
+            CONCAT_WS(
+                '||',
+                UPPER(BTRIM(program_code)),
+                LOWER(
+                    REGEXP_REPLACE(BTRIM(program), '\s+', ' ', 'g')
+                )
+            )
+        ) AS program_key,
+
+        MD5(
+            LOWER(
+                REGEXP_REPLACE(
+                    REPLACE(BTRIM(course), '&', 'and'),
+                    '\s+',
+                    ' ',
+                    'g'
+                )
+            )
+        ) AS college_key,
 
         MD5(campus) AS campus_key,
 

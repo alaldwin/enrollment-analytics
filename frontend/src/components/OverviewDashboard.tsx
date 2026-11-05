@@ -12,6 +12,15 @@ import {
   YAxis,
 } from 'recharts'
 
+import {
+  UsersRound,
+  ClipboardList,
+  GraduationCap,
+  Building2,
+} from 'lucide-react'
+
+import type { LucideIcon } from 'lucide-react'
+
 import type {
   EnrollmentKPIs,
   YearLevelAnalytics,
@@ -44,13 +53,13 @@ function KpiCard({
   title,
   value,
   description,
-  icon,
+  icon: Icon,
   accent,
 }: {
   title: string
   value: number | undefined
   description: string
-  icon: string
+  icon: LucideIcon
   accent: string
 }) {
   return (
@@ -58,8 +67,8 @@ function KpiCard({
       <div className="flex items-center justify-between gap-3">
         <p className="text-sm text-slate-600">{title}</p>
 
-        <div className={`flex h-10 w-10 items-center justify-center rounded-xl text-xl ${accent}`}>
-          {icon}
+        <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${accent}`}>
+          <Icon size={20} strokeWidth={1.8} />
         </div>
       </div>
 
@@ -122,6 +131,8 @@ export default function OverviewDashboard({
     0,
   )
 
+
+
   return (
     <div className="space-y-6">
       {/* Overview heading */}
@@ -157,7 +168,7 @@ export default function OverviewDashboard({
           title="Total Students"
           value={analytics?.total_students}
           description="Student records"
-          icon="♙"
+          icon={UsersRound}
           accent="bg-blue-50 text-blue-600"
         />
 
@@ -165,7 +176,7 @@ export default function OverviewDashboard({
           title="Total Enrollments"
           value={analytics?.total_enrollments}
           description="Enrollment records"
-          icon="▤"
+          icon={ClipboardList}
           accent="bg-purple-500/10 text-purple-400"
         />
 
@@ -173,7 +184,7 @@ export default function OverviewDashboard({
           title="Total Programs"
           value={analytics?.total_programs}
           description="Available programs"
-          icon="▧"
+          icon={GraduationCap}
           accent="bg-cyan-500/10 text-cyan-400"
         />
 
@@ -181,7 +192,7 @@ export default function OverviewDashboard({
           title="Total Campuses"
           value={analytics?.total_campuses}
           description="Across all locations"
-          icon="⌖"
+          icon={Building2}
           accent="bg-emerald-500/10 text-emerald-400"
         />
       </div>

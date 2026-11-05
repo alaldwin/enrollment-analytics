@@ -28,4 +28,4 @@ sources:
               - not_null
               - accepted_values:
                   arguments:
-                    values: ["Enrolled", "Dropped", "Loa"]
+                    values: ["Enrolled", "Pending", "Dropped", "Withdrawn", "Loa"]

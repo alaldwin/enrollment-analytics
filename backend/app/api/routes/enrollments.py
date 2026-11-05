@@ -32,23 +32,25 @@ def get_enrollments(
     offset = (page - 1) * page_size
 
     filters = """
-                WHERE (
-                    CAST(:year_level AS INTEGER) IS NULL
-                    OR fact.year_level = CAST(:year_level AS INTEGER)
-                )
-                AND (
-                    CAST(:enrollment_status AS TEXT) IS NULL
-                    OR LOWER(fact.enrollment_status) = LOWER(
-                        CAST(:enrollment_status AS TEXT)
-                    )
-                )
-                AND (
-                    CAST(:search AS TEXT) IS NULL
-                    OR student.student_id ILIKE '%' || CAST(:search AS TEXT) || '%'
-                    OR program.program ILIKE '%' || CAST(:search AS TEXT) || '%'
-                    OR campus.campus ILIKE '%' || CAST(:search AS TEXT) || '%'
-                )
-            """
+        WHERE (
+            CAST(:year_level AS INTEGER) IS NULL
+            OR fact.year_level = CAST(:year_level AS INTEGER)
+        )
+        AND (
+            CAST(:enrollment_status AS TEXT) IS NULL
+            OR LOWER(fact.enrollment_status) = LOWER(
+                CAST(:enrollment_status AS TEXT)
+            )
+        )
+        AND (
+            CAST(:search AS TEXT) IS NULL
+            OR student.student_id ILIKE '%' || CAST(:search AS TEXT) || '%'
+            OR program.program ILIKE '%' || CAST(:search AS TEXT) || '%'
+            OR program.program_code ILIKE '%' || CAST(:search AS TEXT) || '%'
+            OR college.college ILIKE '%' || CAST(:search AS TEXT) || '%'
+            OR campus.campus ILIKE '%' || CAST(:search AS TEXT) || '%'
+        )
+    """
 
     params = {
         "year_level": year_level,
@@ -68,6 +70,9 @@ def get_enrollments(
         LEFT JOIN enroll.dim_program AS program
             ON fact.program_key = program.program_key
 
+        LEFT JOIN enroll.dim_college AS college
+            ON fact.college_key = college.college_key
+
         LEFT JOIN enroll.dim_campus AS campus
             ON fact.campus_key = campus.campus_key
 
@@ -84,10 +89,10 @@ def get_enrollments(
             fact.age,
             fact.city,
 
-            -- Program information
+            -- Program and college information
             program.program_code,
             program.program,
-            program.course,
+            college.college AS course,
 
             -- Campus information
             campus.campus,
@@ -117,6 +122,9 @@ def get_enrollments(
 
         LEFT JOIN enroll.dim_program AS program
             ON fact.program_key = program.program_key
+
+        LEFT JOIN enroll.dim_college AS college
+            ON fact.college_key = college.college_key
 
         LEFT JOIN enroll.dim_campus AS campus
             ON fact.campus_key = campus.campus_key

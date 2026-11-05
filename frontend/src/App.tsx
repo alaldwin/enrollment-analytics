@@ -3,6 +3,16 @@ import {
   useState,
 } from 'react'
 
+import {
+  LayoutDashboard,
+  ClipboardList,
+  GraduationCap,
+  Building2,
+  CalendarDays,
+  FileBarChart,
+  Users,
+} from 'lucide-react';
+
 import LoginForm from './components/LoginForm'
 import type { TokenResponse } from './services/auth'
 
@@ -28,22 +38,22 @@ import ReportsPage from './components/ReportsPage'
 import UserManagementPage from './components/UserManagementPage'
 import OverviewDashboard from './components/OverviewDashboard'
 
+import type { LucideIcon } from 'lucide-react';
 
 type NavItem = {
-  label: string
-  icon: string
-}
+  label: string;
+  icon: LucideIcon;
+};
 
 const navigation: NavItem[] = [
-  { label: 'Overview', icon: '▦' },
-  { label: 'Enrollments', icon: '▤' },
-  { label: 'Programs', icon: '▧' },
-  { label: 'Campuses', icon: '⌖' },
-  { label: 'Academic Periods', icon: '▣' },
-  { label: 'Reports', icon: '▥' },
-  { label: 'User Management', icon: '♙' },
-]
-
+  { label: 'Overview', icon: LayoutDashboard },
+  { label: 'Enrollments', icon: ClipboardList },
+  { label: 'Programs', icon: GraduationCap },
+  { label: 'Campuses', icon: Building2 },
+  { label: 'Academic Periods', icon: CalendarDays },
+  { label: 'Reports', icon: FileBarChart },
+  { label: 'User Management', icon: Users },
+];
 
 
 function Sidebar({
@@ -109,29 +119,36 @@ function Sidebar({
                 return true
               })
               .map((item) => {
-              const active = activePage === item.label
+                const active = activePage === item.label
+                const Icon = item.icon
 
-              return (
-                <button
-                  key={item.label}
-                  onClick={() => {
-                    onNavigate(item.label)
-                    onClose()
-                  }}
-                  className={`flex w-full items-center gap-3 rounded-xl px-3 py-3 text-left text-sm transition ${
-                    active
-                      ? 'bg-blue-600/10 font-medium text-blue-700'
-                      : 'text-slate-600 hover:bg-blue-100 hover:text-slate-900'
-                  }`}
-                >
-                  <span className="w-5 text-center text-lg">{item.icon}</span>
-                  {item.label}
-                  {active && (
-                    <span className="ml-auto h-1.5 w-1.5 rounded-full bg-indigo-400" />
-                  )}
-                </button>
-              )
-            })}
+                return (
+                  <button
+                    key={item.label}
+                    onClick={() => {
+                      onNavigate(item.label)
+                      onClose()
+                    }}
+                    className={`flex w-full items-center gap-3 rounded-xl px-3 py-3 text-left text-sm transition ${
+                      active
+                        ? 'bg-blue-600/10 font-medium text-blue-700'
+                        : 'text-slate-600 hover:bg-blue-100 hover:text-slate-900'
+                    }`}
+                  >
+                    <Icon
+                      size={20}
+                      strokeWidth={1.8}
+                      className={active ? 'text-blue-600' : 'text-slate-500'}
+                    />
+
+                    {item.label}
+
+                    {active && (
+                      <span className="ml-auto h-1.5 w-1.5 rounded-full bg-indigo-400" />
+                    )}
+                  </button>
+                )
+              })}
           </nav>
         </div>
 
