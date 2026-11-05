@@ -1,0 +1,31 @@
+version: 2
+
+sources:
+  - name: enrollment_raw
+    description: "Raw enrollment data loaded by the Python ETL pipeline."
+    schema: raw_enroll
+    tables:
+      - name: enrollment
+        description: "Original enrollment records."
+        columns:
+          - name: student_id
+            data_tests:
+              - not_null
+
+          - name: academic_year
+            data_tests:
+              - not_null
+
+          - name: semester
+            data_tests:
+              - not_null
+              - accepted_values:
+                  arguments:
+                    values: ["1st", "2nd", "1St", "2Nd"]
+
+          - name: enrollment_status
+            data_tests:
+              - not_null
+              - accepted_values:
+                  arguments:
+                    values: ["Enrolled", "Dropped", "Loa"]

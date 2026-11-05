@@ -1,0 +1,151 @@
+version: 2
+
+models:
+
+  - name: dim_student
+    description: "Student dimension."
+    columns:
+      - name: student_key
+        data_tests:
+          - unique
+          - not_null
+
+      - name: student_id
+        data_tests:
+          - unique
+          - not_null
+
+      - name: city
+        data_tests:
+          - not_null
+
+  - name: dim_program
+    description: "Program and college dimension."
+    columns:
+      - name: program_key
+        data_tests:
+          - unique
+          - not_null
+
+      - name: program_code
+        data_tests:
+          - unique
+          - not_null
+
+      - name: program
+        data_tests:
+          - not_null
+
+  - name: dim_campus
+    description: "Campus dimension."
+    columns:
+      - name: campus_key
+        data_tests:
+          - unique
+          - not_null
+
+      - name: campus
+        data_tests:
+          - not_null
+
+  - name: dim_academic_period
+    description: "Academic year and semester dimension."
+    columns:
+      - name: academic_period_key
+        data_tests:
+          - unique
+          - not_null
+
+      - name: academic_year
+        data_tests:
+          - not_null
+
+      - name: trimester
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ["1st", "2nd"]
+
+  - name: dim_admission
+    description: "Admission type dimension."
+    columns:
+      - name: admission_key
+        data_tests:
+          - unique
+          - not_null
+
+      - name: admission_type
+        data_tests:
+          - not_null
+
+  - name: fact_enrollment
+    description: "Enrollment fact table."
+    columns:
+      - name: enrollment_key
+        data_tests:
+          - unique
+          - not_null
+
+      - name: student_key
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_student')
+                field: student_key
+
+      - name: program_key
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_program')
+                field: program_key
+
+      - name: campus_key
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_campus')
+                field: campus_key
+
+      - name: academic_period_key
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_academic_period')
+                field: academic_period_key
+
+      - name: admission_key
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('dim_admission')
+                field: admission_key
+
+      - name: year_level
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: [1, 2, 3, 4]
+
+      - name: enrollment_status
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ["Enrolled", "Dropped", "Loa"]
+
+      - name: enrollment_count
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: [1]
+
+      - name: total_units_enrolled
+        data_tests:
+          - not_null
